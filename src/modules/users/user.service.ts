@@ -15,17 +15,18 @@ export default class UserService {
 
   private users: IUser[] = [{ name: 'amin', age: 18 }];
 
-  all(): Promise<IUser[]> {
+  all(): Promise<User[]> {
     return this.usersRepository.find();
   }
 
-  findUser(id: string): IUser {
-    const idNumber: number = parseInt(id);
-    return this.users[idNumber - 1];
+  findUser(id: string): Promise<User> {
+    return this.usersRepository.findOne(id);
   }
 
-  createUser(createUserDto: CreateUserDto) {
-    this.usersRepository.insert(createUserDto);
+  async createUser(createUserDto: CreateUserDto): Promise<User> {
+    const user = this.usersRepository.create(createUserDto);
+
+    return await this.usersRepository.save(user);
   }
 
   updateUser(id: string, updateUserDto: UpdateUserDto): IUser {
