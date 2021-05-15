@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from './entities/user.entity';
+import { validate } from "class-validator";
 
+import { User } from './entities/user.entity';
 import IUser from './interfaces/user.interface';
 import { CreateUserDto, UpdateUserDto } from './dtos/user.dto';
 
@@ -15,18 +16,25 @@ export default class UserService {
 
   private users: IUser[] = [{ name: 'amin', age: 18 }];
 
-  all(): Promise<User[]> {
+  all() {
     return this.usersRepository.find();
   }
 
-  findUser(id: string): Promise<User> {
+  findUser(id: string) {
     return this.usersRepository.findOne(id);
   }
 
-  async createUser(createUserDto: CreateUserDto): Promise<User> {
+  async createUser(createUserDto: CreateUserDto) {
     const user = this.usersRepository.create(createUserDto);
 
-    return await this.usersRepository.save(user);
+    console.log(User)
+    const errors = await validate(user);
+
+    if (errors.length === 0) {
+      return await this.usersRepository.save(user);
+    } else {
+      throw new Error(`Validation failed!`);
+    }
   }
 
   updateUser(id: string, updateUserDto: UpdateUserDto): IUser {

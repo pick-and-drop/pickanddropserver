@@ -15,7 +15,6 @@ import { User } from './modules/users/entities/user.entity';
       password: '123123',
       database: 'pickanddrop_development',
       entities: [User],
-      synchronize: true,
     }),
     UsersModule,
   ],

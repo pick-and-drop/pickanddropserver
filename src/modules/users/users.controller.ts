@@ -8,6 +8,7 @@ import {
   Delete,
   UseInterceptors,
   ClassSerializerInterceptor,
+  ParseIntPipe,
 } from '@nestjs/common';
 
 import IUser from './interfaces/user.interface';
@@ -15,18 +16,19 @@ import { UpdateUserDto, CreateUserDto } from './dtos/user.dto';
 import UserService from './user.service';
 
 @Controller('users')
+@UseInterceptors(ClassSerializerInterceptor)
 export default class UsersController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService
+  ) {}
 
   @Get()
-  @UseInterceptors(ClassSerializerInterceptor)
   async index() {
     return await this.userService.all();
   }
 
   @Get(':id')
-  @UseInterceptors(ClassSerializerInterceptor)
-  show(@Param('id') id: string) {
+  show(@Param('id', ParseIntPipe) id: string) {
     return this.userService.findUser(id);
   }
 

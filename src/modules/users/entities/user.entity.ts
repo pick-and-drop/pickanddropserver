@@ -8,10 +8,11 @@ export class User {
   id: number;
 
   @Column()
+  @Length(20)
   name: string;
 
   @Column()
   @Exclude()
-  @Min(0)
+  @Min(18)
   age: number;
 }
