@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { validate } from "class-validator";
+import { Repository, UpdateDateColumn } from 'typeorm';
+import { validate } from 'class-validator';
 
 import { User } from './entities/user.entity';
 import IUser from './interfaces/user.interface';
@@ -20,14 +20,13 @@ export default class UserService {
     return this.usersRepository.find();
   }
 
-  findUser(id: string) {
+  findUser(id: number) {
     return this.usersRepository.findOne(id);
   }
 
   async createUser(createUserDto: CreateUserDto) {
     const user = this.usersRepository.create(createUserDto);
 
-    console.log(User)
     const errors = await validate(user);
 
     if (errors.length === 0) {
@@ -37,14 +36,33 @@ export default class UserService {
     }
   }
 
-  updateUser(id: string, updateUserDto: UpdateUserDto): IUser {
-    const idNumber: number = parseInt(id);
-    this.users[idNumber - 1] = updateUserDto;
-    return this.users[idNumber - 1];
+  async updateUser(id: number, updateUserDto: UpdateUserDto) {
+    const user = await this.usersRepository.findOne(id);
+
+    if (!user) return;
+
+    const updatedUser = this.updateUserObject(user.id, updateUserDto);
+    const errors = await validate(updatedUser);
+
+    if (errors.length === 0) {
+      return await this.usersRepository.save(updatedUser);
+    } else {
+      throw new Error(`Validation failed!`);
+    }
   }
 
-  deleteUser(id: string): IUser {
-    const idNumber: number = parseInt(id);
-    return this.users.splice(idNumber - 1, 1)[0];
+  async deleteUser(id: number) {
+    const user = await this.usersRepository.findOne(id);
+
+    if (!user) return;
+
+    await this.usersRepository.delete(user.id);
+
+    return user;
+  }
+
+  private updateUserObject(id: number, updateUserDto: UpdateUserDto): User {
+    const { name, age } = updateUserDto;
+    return new User(id, name, age);
   }
 }

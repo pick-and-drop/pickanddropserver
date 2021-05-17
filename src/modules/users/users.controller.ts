@@ -18,9 +18,7 @@ import UserService from './user.service';
 @Controller('users')
 @UseInterceptors(ClassSerializerInterceptor)
 export default class UsersController {
-  constructor(
-    private readonly userService: UserService
-  ) {}
+  constructor(private readonly userService: UserService) {}
 
   @Get()
   async index() {
@@ -28,7 +26,7 @@ export default class UsersController {
   }
 
   @Get(':id')
-  show(@Param('id', ParseIntPipe) id: string) {
+  show(@Param('id', ParseIntPipe) id: number) {
     return this.userService.findUser(id);
   }
 
@@ -38,12 +36,17 @@ export default class UsersController {
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto): IUser {
+  update(
+    @Param('id', ParseIntPipe)
+    id: number,
+    @Body()
+    updateUserDto: UpdateUserDto,
+  ) {
     return this.userService.updateUser(id, updateUserDto);
   }
 
   @Delete(':id')
-  destroy(@Param('id') id: string): IUser {
+  destroy(@Param('id', ParseIntPipe) id: number) {
     return this.userService.deleteUser(id);
   }
 }
