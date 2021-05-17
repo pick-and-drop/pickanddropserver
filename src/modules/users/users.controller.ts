@@ -11,7 +11,6 @@ import {
   ParseIntPipe,
 } from '@nestjs/common';
 
-import IUser from './interfaces/user.interface';
 import { UpdateUserDto, CreateUserDto } from './dtos/user.dto';
 import UserService from './user.service';
 

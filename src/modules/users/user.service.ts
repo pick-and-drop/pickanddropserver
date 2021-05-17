@@ -4,7 +4,6 @@ import { Repository, UpdateDateColumn } from 'typeorm';
 import { validate } from 'class-validator';
 
 import { User } from './entities/user.entity';
-import IUser from './interfaces/user.interface';
 import { CreateUserDto, UpdateUserDto } from './dtos/user.dto';
 
 @Injectable()
@@ -13,8 +12,6 @@ export default class UserService {
     @InjectRepository(User)
     private usersRepository: Repository<User>,
   ) {}
-
-  private users: IUser[] = [{ name: 'amin', age: 18 }];
 
   all() {
     return this.usersRepository.find();
