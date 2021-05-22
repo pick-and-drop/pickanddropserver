@@ -16,6 +16,9 @@ export class User {
   @Min(18)
   age: number;
 
+  @Column()
+  password: string;
+
   constructor(id: number, name: string, age: number) {
     this.id = id;
     this.name = name;

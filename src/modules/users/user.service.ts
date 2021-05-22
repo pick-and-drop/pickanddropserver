@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, UpdateDateColumn } from 'typeorm';
+import { Repository } from 'typeorm';
 import { validate } from 'class-validator';
 
 import { User } from './entities/user.entity';
@@ -23,17 +23,14 @@ export default class UserService {
 
   async createUser(createUserDto: CreateUserDto) {
     const user = this.usersRepository.create(createUserDto);
-
     const errors = await validate(user);
 
-    if (errors.length === 0) {
-      return await this.usersRepository.save(user);
-    } else {
-      throw new Error(`Validation failed!`);
-    }
+    if (errors.length > 0) throw new Error(`Validation failed!`);
+
+    return this.usersRepository.save(user);
   }
 
-  async updateUser(id: number, updateUserDto: UpdateUserDto) {
+  async updateUser(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     const user = await this.usersRepository.findOne(id);
 
     if (!user) return;
@@ -41,11 +38,9 @@ export default class UserService {
     const updatedUser = this.updateUserObject(user.id, updateUserDto);
     const errors = await validate(updatedUser);
 
-    if (errors.length === 0) {
-      return await this.usersRepository.save(updatedUser);
-    } else {
-      throw new Error(`Validation failed!`);
-    }
+    if (errors.length > 0) throw new Error(`Validation failed!`);
+
+    return this.usersRepository.save(updatedUser);
   }
 
   async deleteUser(id: number) {
@@ -53,9 +48,7 @@ export default class UserService {
 
     if (!user) return;
 
-    await this.usersRepository.delete(user.id);
-
-    return user;
+    return await this.usersRepository.delete(user.id);
   }
 
   private updateUserObject(id: number, updateUserDto: UpdateUserDto): User {

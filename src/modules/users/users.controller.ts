@@ -10,6 +10,7 @@ import {
   ClassSerializerInterceptor,
   ParseIntPipe,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 import { UpdateUserDto, CreateUserDto } from './dtos/user.dto';
 import UserService from './user.service';
@@ -25,8 +26,8 @@ export default class UsersController {
   }
 
   @Get(':id')
-  show(@Param('id', ParseIntPipe) id: number) {
-    return this.userService.findUser(id);
+  async show(@Param('id', ParseIntPipe) id: number) {
+    return await this.userService.findUser(id);
   }
 
   @Post()
