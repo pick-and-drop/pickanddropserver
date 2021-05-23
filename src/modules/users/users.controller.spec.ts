@@ -7,7 +7,7 @@ import { UsersModule } from './users.module';
 import { User } from './entities/user.entity';
 import UsersController from './users.controller';
 
-describe('UserService', () => {
+describe('UserController', () => {
   let usersController: UsersController;
   let userRepository: Repository<User>;
 
