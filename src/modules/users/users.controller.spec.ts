@@ -2,13 +2,13 @@ import { Test } from '@nestjs/testing';
 import { Repository } from 'typeorm';
 import * as faker from 'faker';
 
-import UserService from './user.service';
 import { TestingProviderModule } from '../../providers/testing/provider.module';
 import { UsersModule } from './users.module';
 import { User } from './entities/user.entity';
+import UsersController from './users.controller';
 
 describe('UserService', () => {
-  let userService: UserService;
+  let usersController: UsersController;
   let userRepository: Repository<User>;
 
   beforeAll(async () => {
@@ -17,7 +17,7 @@ describe('UserService', () => {
     }).compile();
 
     userRepository = moduleRef.get('UserRepository');
-    userService = moduleRef.get<UserService>(UserService);
+    usersController = moduleRef.get<UsersController>(UsersController);
   });
 
   describe('all', () => {
@@ -44,13 +44,13 @@ describe('UserService', () => {
     });
 
     it('should return 3 users', async () => {
-      const users = await userService.all();
+      const users = await usersController.index();
 
       expect(users.length).toBe(3);
     });
 
     it('should return 3 users', async () => {
-      const users = await userService.all();
+      const users = await usersController.index();
 
       expect(users.length).toBe(3);
     });

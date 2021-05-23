@@ -10,7 +10,6 @@ import {
   ClassSerializerInterceptor,
   ParseIntPipe,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 
 import { UpdateUserDto, CreateUserDto } from './dtos/user.dto';
 import UserService from './user.service';
