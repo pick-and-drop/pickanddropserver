@@ -11,7 +11,7 @@ describe('UserService', () => {
   let userService: UserService;
   let userRepository: Repository<User>;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [TestingProviderModule, UsersModule],
     }).compile();
@@ -21,7 +21,6 @@ describe('UserService', () => {
   });
 
   describe('findAll', () => {
-    console.log(faker.datatype.number())
     beforeEach(async () => {
       await userRepository.insert({
         name: faker.name.findName(),
@@ -42,6 +41,12 @@ describe('UserService', () => {
 
     afterEach(async () => {
       await userRepository.clear();
+    });
+
+    it('should return 3 users', async () => {
+      const users = await userService.all();
+
+      expect(users.length).toBe(3);
     });
 
     it('should return 3 users', async () => {
