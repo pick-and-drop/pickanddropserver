@@ -16,7 +16,7 @@ import { PostgresConfigModule } from '../../config/database/postgres/config.modu
         username: postgresConfigService.user,
         password: postgresConfigService.password,
         database: postgresConfigService.name,
-        entities: [__dirname + '/../../modules/**/entities/*.ts'],
+        entities: [__dirname + '/../../modules/**/entities/*'],
       }),
     }),
   ],
