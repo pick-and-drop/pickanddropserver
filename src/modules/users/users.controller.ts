@@ -9,6 +9,8 @@ import {
   UseInterceptors,
   ClassSerializerInterceptor,
   ParseIntPipe,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 
 import { UpdateUserDto, CreateUserDto } from './dtos/user.dto';
@@ -26,7 +28,11 @@ export default class UsersController {
 
   @Get(':id')
   async show(@Param('id', ParseIntPipe) id: number) {
-    return await this.userService.findUser(id);
+    const user = await this.userService.findUser(id);
+
+    if (!user) throw new HttpException('NO_CONTENT', HttpStatus.NO_CONTENT);
+
+    return user;
   }
 
   @Post()
