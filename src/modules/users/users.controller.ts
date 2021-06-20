@@ -51,7 +51,11 @@ export default class UsersController {
   }
 
   @Delete(':id')
-  destroy(@Param('id', ParseIntPipe) id: number) {
-    return this.userService.deleteUser(id);
+  async destroy(@Param('id', ParseIntPipe) id: number) {
+    const userAffected = await this.userService.deleteUser(id);
+
+    if (!userAffected || !userAffected.affected)
+      throw new HttpException('NO_CONTENT', HttpStatus.NO_CONTENT);
+    return userAffected;
   }
 }

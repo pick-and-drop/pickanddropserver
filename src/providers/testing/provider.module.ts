@@ -11,4 +11,4 @@ import { PostgresDatabaseProviderModule } from '../postgres/provider.module';
     PostgresDatabaseProviderModule,
   ],
 })
-export class TestingProviderModule {}
+ export class TestingProviderModule {}

@@ -48,12 +48,6 @@ describe('UserService', () => {
 
       expect(users.length).toBe(3);
     });
-
-    it('should return 3 users', async () => {
-      const users = await userService.all();
-
-      expect(users.length).toBe(3);
-    });
   });
 
   describe('find', () => {
