@@ -8,7 +8,7 @@ export default {
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_NAME,
   logging: true,
-  migrations: ['dist/src/database/migrations/*.js'],
+  migrations: ['src/database/migrations/*.ts'],
   cli: {
     migrationsDir: 'src/database/migrations',
   },

@@ -16,3 +16,4 @@ export class PostRefactoring1621665842311 implements MigrationInterface {
     await queryRunner.dropColumn('user', 'password');
   }
 }
+

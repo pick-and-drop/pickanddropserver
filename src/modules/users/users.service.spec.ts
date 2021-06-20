@@ -55,4 +55,62 @@ describe('UserService', () => {
       expect(users.length).toBe(3);
     });
   });
+
+  describe('find', () => {
+    let user: User;
+
+    beforeEach(async () => {
+      const userCreated = userRepository.create({
+        name: faker.name.findName(),
+        age: 18,
+        password: faker.internet.password(),
+      });
+      
+      user = await userRepository.save(userCreated)
+    });
+
+    afterEach(async () => {
+      await userRepository.clear();
+    });
+
+    it('should return user', async () => {
+      const userFound = userService.findUser(user.id)
+
+      expect(userFound).toBeDefined();
+    });
+  });
+
+  describe('create', () => {
+    it('should create user', async () => {
+      let createUserDto = {
+          name: 'Caleb caleb xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+          age: 18,
+          password: faker.internet.password(),
+      };
+      const user = await userService.createUser(createUserDto);
+
+      expect(user).toBeDefined();
+    });
+
+    it('should not created a user', async () => {
+      let createUserDto = {
+          name: 'Caleb caleb',
+          age: 18,
+          password: faker.internet.password(),
+      };
+
+
+      const user = async () => { await userService.createUser(createUserDto) };
+
+      await expect(user).rejects.toThrow();
+    });
+
+    afterEach(async () => {
+      await userRepository.clear();
+    });
+  });
+
+  describe('update', () => {
+
+  });
 });

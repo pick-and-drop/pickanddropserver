@@ -7,6 +7,7 @@ import * as faker from 'faker';
 import { TestingProviderModule } from '../../providers/testing/provider.module';
 import { UsersModule } from './users.module';
 import { User } from './entities/user.entity';
+import IUser from './interfaces/user.interface';
 
 describe('UsersController', () => {
   let app: INestApplication;
@@ -24,22 +25,20 @@ describe('UsersController', () => {
   });
 
   describe('GET /users', () => {
+
+    const insertUser = () => {
+      const user: IUser = {
+        name: faker.name.findName(),
+        age: 18,
+        password: faker.internet.password(),
+      };
+
+      return userRepository.insert(user);
+    };
     beforeEach(async () => {
-      await userRepository.insert({
-        name: faker.name.findName(),
-        age: 18,
-        password: faker.internet.password(),
-      });
-      await userRepository.insert({
-        name: faker.name.findName(),
-        age: 18,
-        password: faker.internet.password(),
-      });
-      await userRepository.insert({
-        name: faker.name.findName(),
-        age: 18,
-        password: faker.internet.password(),
-      });
+      await insertUser();
+      await insertUser();
+      await insertUser();
     });
 
     it('responds 3 users', async () => {
